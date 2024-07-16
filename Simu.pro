@@ -15,6 +15,7 @@ SOURCES += \
     pointmassif.cpp \
     simuwindow.cpp \
     soleil.cpp \
+    solidemassif.cpp \
     terre.cpp \
     venus.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     pointmassif.h \
     simuwindow.h \
     soleil.h \
+    solidemassif.h \
     terre.h \
     venus.h
 

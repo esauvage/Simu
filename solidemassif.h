@@ -2,17 +2,18 @@
 #define SOLIDEMASSIF_H
 
 #include "pointmassif.h"
-class SolideMassif
+class SolideMassif : public PointMassif
 {
 public:
     SolideMassif();
     void tick(int temps);
     void clearPoints();
-    void addPoint(const PointMassif &f);
+    void addPoint(const std::shared_ptr <PointMassif> &f);
+    QList <PointMassif *> points() const override;
+    void clearForces() override;
 
 private:
-    QString _nom;
-    QList<PointMassif> _points;
+    QList<std::shared_ptr<PointMassif> > _points;
 };
 
 #endif // SOLIDEMASSIF_H

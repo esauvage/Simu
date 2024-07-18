@@ -25,6 +25,6 @@ private:
     void tick(int temps);
 
     Ui::SimuWindow *ui;
-    QList<PointMassif> _corps;
+    QList<std::shared_ptr<PointMassif> > _corps;
 };
 #endif // SIMUWINDOW_H

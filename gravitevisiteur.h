@@ -7,7 +7,7 @@ class GraviteVisiteur
 {
 public:
     GraviteVisiteur();
-    static void appliqueGravite(QList<PointMassif> &points);
+    static void appliqueGravite(QList<std::shared_ptr<PointMassif> > &points);
 };
 
 #endif // GRAVITEVISITEUR_H

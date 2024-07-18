@@ -1,7 +1,7 @@
 #ifndef TERRE_H
 #define TERRE_H
 
-#include "pointmassif.h"
+#include "solidemassif.h"
 
 class Terre : public PointMassif
 {

@@ -2,21 +2,29 @@
 
 #include <QList>
 
+using namespace std;
+
 GraviteVisiteur::GraviteVisiteur() {}
 
-void GraviteVisiteur::appliqueGravite(QList<PointMassif> &points)
+void GraviteVisiteur::appliqueGravite(QList<shared_ptr <PointMassif> > &points)
 {
-    for (int i = 0; i < points.size() - 1; ++i)
+    QList<PointMassif *> pointsNus;
+    for (const auto & p : points)
     {
-        auto &c1 = points[i];
-        for (int j = i + 1; j < points.size(); ++j)
+        pointsNus << p->points();
+    }
+    for (int i = 0; i < pointsNus.size() - 1; ++i)
+    {
+        auto &c1 = pointsNus[i];
+        for (int j = i + 1; j < pointsNus.size(); ++j)
         {
-            auto &c2 = points[j];
+            auto &c2 = pointsNus[j];
+            if (c1->parent() && (c1->parent() == c2->parent())) continue;
             //Les choses s'attirent en fonction de leur masse et en raison inverse du carré de leur distance
-            double dist = 6.67430e-11 * c1.masse() * c2.masse()/(c1.pos() - c2.pos()).lengthSquared();
-            QVector3D f = dist * (c2.pos()-c1.pos()).normalized();
-            c1.addForce(f);
-            c2.addForce(-f);
+            double dist = 6.67430e-11 * c1->masse() * c2->masse()/(c1->pos() - c2->pos()).lengthSquared();
+            QVector3D f = dist * (c2->pos()-c1->pos()).normalized();
+            c1->addForce(f);
+            c2->addForce(-f);
         }
     }
 }

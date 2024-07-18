@@ -17,22 +17,23 @@ void SolideMassif::tick(int temps)
     }
     centre /= masseTotale;
     QVector3D a;
+    QVector3D moment;
+    double momentInertie;
     for (auto & p : _points)
     {
         if (p->masse())
         {
-            a += p->force() / p->masse();
+            a += p->force();
         }
+        moment += QVector3D::crossProduct(p->pos() - centre, p->force());
+        momentInertie = (p->pos() - centre).lengthSquared() * p->masse();
     }
+    a /= masseTotale;
+    _momentCinetique += moment * temps;
+    _vitAngle += _momentCinetique/momentInertie;
     setVit(vit() + a * temps);
     setPos(pos() + vit() * temps);
-
-    QVector3D moment;
-    for (auto & p : _points)
-    {
-        moment += QVector3D::crossProduct((p->pos() - centre), p->force());
-    }
-    qDebug() << nom() << "Position : " << pos() << "Vitesse : " << vit();
+    qDebug() << nom() << "Position : " << pos() << "Vitesse : " << vit() << "Vitesse Angulaire : " << _vitAngle ;
 }
 
 void SolideMassif::clearPoints()

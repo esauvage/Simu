@@ -30,9 +30,9 @@ SimuWindow::~SimuWindow()
 void SimuWindow::on_btnGo_clicked()
 {
 //    for (int i = 0; i < 87.869 * 24 * 3.6; ++i)
-//        for (int i = 0; i < 365.25 * 24 * 3.6; ++i)
+        for (int i = 0; i < 365.25 * 24 * 3.6; ++i)
     {
-//        qDebug() << QDateTime(QDate(2024, 1, 1), QTime(0, 0)).addSecs(i);
+        qDebug() << QDateTime(QDate(2024, 1, 1), QTime(0, 0)).addSecs(i*1000);
         tick(1000);
     }
 }

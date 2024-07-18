@@ -3,7 +3,7 @@
 
 #include "solidemassif.h"
 
-class Terre : public PointMassif
+class Terre : public SolideMassif
 {
 public:
     Terre();

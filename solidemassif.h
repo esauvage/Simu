@@ -6,7 +6,7 @@ class SolideMassif : public PointMassif
 {
 public:
     SolideMassif();
-    void tick(int temps);
+    void tick(int temps) override;
     void clearPoints();
     void addPoint(const std::shared_ptr <PointMassif> &f);
     QList <PointMassif *> points() const override;
@@ -14,6 +14,8 @@ public:
 
 private:
     QList<std::shared_ptr<PointMassif> > _points;
+    QVector3D _momentCinetique;
+    QVector3D _vitAngle;
 };
 
 #endif // SOLIDEMASSIF_H

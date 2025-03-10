@@ -2,6 +2,9 @@
 #define SOLIDEMASSIF_H
 
 #include "pointmassif.h"
+
+class LienRessort;
+
 class SolideMassif : public PointMassif
 {
 public:
@@ -9,7 +12,7 @@ public:
     void tick(int temps) override;
     void clearPoints();
     void addPoint(const std::shared_ptr <PointMassif> &f);
-    QList <PointMassif *> points() const override;
+    QList <std::shared_ptr<PointMassif> > points() override;
     void clearForces() override;
 
 private:

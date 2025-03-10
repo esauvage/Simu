@@ -1,5 +1,7 @@
 #include "pointmassif.h"
 
+#include "lienressort.h"
+
 #include <QDebug>
 
 using namespace std;
@@ -13,13 +15,14 @@ PointMassif::PointMassif()
 void PointMassif::tick(int temps)
 {
     QVector3D a;
+    auto sForce = force();
     if (_masse)
     {
-        a = force()/_masse;
+        a = sForce/_masse;
     }
     _vit += a * temps;
     _pos += _vit * temps;
-    qDebug() << _nom << "Position : " << _pos << "Vitesse : " << _vit << "Accélération :" << a << a.length();
+    qDebug() << _nom << "Vitesse:" << _vit.length();//"Position : " << _pos << "Vitesse : " << _vit << "Accélération :" << a << a.length();
 }
 
 float PointMassif::masse() const
@@ -59,6 +62,7 @@ QVector3D PointMassif::force() const
     {
         r += f;
     }
+
     return r;
 }
 
@@ -92,9 +96,27 @@ void PointMassif::setParent(PointMassif *newParent)
     _parent = newParent;
 }
 
-QList<PointMassif *> PointMassif::points() const
+QList<shared_ptr<PointMassif> > PointMassif::points()
 {
-    QList<PointMassif *>r;
-    r << const_cast<PointMassif *>(this);
+    QList<shared_ptr<PointMassif> >r;
+    r << shared_from_this();
     return r;
+}
+
+shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur)
+{
+    auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur);
+    _liens << lien;
+    point->addLien(lien);
+    return lien;
+}
+
+void PointMassif::addLien(std::shared_ptr<LienRessort> lien)
+{
+    _liens << lien;
+}
+
+QList<std::shared_ptr<LienRessort> > PointMassif::liens()
+{
+    return _liens;
 }

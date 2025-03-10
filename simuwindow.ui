@@ -17,14 +17,24 @@
    <widget class="QPushButton" name="btnGo">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>110</y>
+      <x>30</x>
+      <y>10</y>
       <width>80</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Go</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="gvwTerre">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>411</width>
+      <height>301</height>
+     </rect>
     </property>
    </widget>
   </widget>
@@ -37,8 +47,20 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFichir">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="actionOuvrir"/>
+   </widget>
+   <addaction name="menuFichir"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOuvrir">
+   <property name="text">
+    <string>&amp;Ouvrir...</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

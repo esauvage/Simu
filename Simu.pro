@@ -10,22 +10,28 @@ CONFIG += c++17
 
 SOURCES += \
     gravitevisiteur.cpp \
+    lienressort.cpp \
+    lienvisiteur.cpp \
     main.cpp \
     mercure.cpp \
     pointmassif.cpp \
     simuwindow.cpp \
     soleil.cpp \
     solidemassif.cpp \
+    sphereponctuelle.cpp \
     terre.cpp \
     venus.cpp
 
 HEADERS += \
     gravitevisiteur.h \
+    lienressort.h \
+    lienvisiteur.h \
     mercure.h \
     pointmassif.h \
     simuwindow.h \
     soleil.h \
     solidemassif.h \
+    sphereponctuelle.h \
     terre.h \
     venus.h
 

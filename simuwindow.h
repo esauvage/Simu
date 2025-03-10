@@ -2,6 +2,8 @@
 #define SIMUWINDOW_H
 
 #include <QMainWindow>
+
+#include <QGraphicsLineItem>
 #include "pointmassif.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,10 +23,14 @@ public:
 private slots:
     void on_btnGo_clicked();
 
+    void on_actionOuvrir_triggered();
+
 private:
     void tick(int temps);
 
     Ui::SimuWindow *ui;
     QList<std::shared_ptr<PointMassif> > _corps;
+
+    QGraphicsLineItem * _gTerre;
 };
 #endif // SIMUWINDOW_H

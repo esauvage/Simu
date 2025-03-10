@@ -4,7 +4,9 @@
 #include <QVector3D>
 #include <QList>
 
-class PointMassif
+class LienRessort;
+
+class PointMassif : public std::enable_shared_from_this<PointMassif>
 {
 public:
     PointMassif();
@@ -26,13 +28,18 @@ public:
 
     PointMassif *parent() const;
     void setParent(PointMassif *newParent);
-    virtual QList <PointMassif *> points() const;
+    virtual QList <std::shared_ptr<PointMassif> > points();
+
+    std::shared_ptr<LienRessort> addLien(std::shared_ptr<PointMassif> point, double raideur);
+    void addLien(std::shared_ptr<LienRessort> lien);
+    QList<std::shared_ptr<LienRessort> > liens();
 
 private:
     QString _nom;
     QVector3D _pos;
     QVector3D _vit;
     QList<QVector3D> _forces;
+    QList<std::shared_ptr<LienRessort> > _liens;
     float _masse;
     PointMassif * _parent;
 };

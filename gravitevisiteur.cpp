@@ -8,7 +8,7 @@ GraviteVisiteur::GraviteVisiteur() {}
 
 void GraviteVisiteur::appliqueGravite(QList<shared_ptr <PointMassif> > &points)
 {
-    QList<PointMassif *> pointsNus;
+    QList<shared_ptr<PointMassif> > pointsNus;
     for (const auto & p : points)
     {
         pointsNus << p->points();

@@ -9,18 +9,24 @@ SolideMassif::SolideMassif() {}
 void SolideMassif::tick(int temps)
 {
     QVector3D centre;
+    QVector3D vitCentre;
     double masseTotale = 0;
     for (auto & p : _points)
     {
+        p->tick(temps);
         centre += p->pos() * p->masse();
+        vitCentre += p->vit() * p->masse();
         masseTotale += p->masse();
     }
     centre /= masseTotale;
+    vitCentre /= masseTotale;
     QVector3D a;
     QVector3D moment;
     double momentInertie;
     for (auto & p : _points)
     {
+        p->setPos(p->pos() - centre);
+        p->setVit(p->vit() - vitCentre);
         if (p->masse())
         {
             a += p->force();
@@ -31,8 +37,11 @@ void SolideMassif::tick(int temps)
     a /= masseTotale;
     _momentCinetique += moment * temps;
     _vitAngle += _momentCinetique/momentInertie;
-    setVit(vit() + a * temps);
-    setPos(pos() + vit() * temps);
+ //   setVit(vit() + a * temps);
+    setVit(vitCentre);
+    centre += vit() * temps;
+    setPos(centre);
+    // setPos(pos() + vit() * temps);
     qDebug() << nom() << "Position : " << pos() << "Vitesse : " << vit() << "Vitesse Angulaire : " << _vitAngle ;
 }
 
@@ -46,14 +55,15 @@ void SolideMassif::addPoint(const std::shared_ptr<PointMassif> &f)
     _points << f;
 }
 
-QList<PointMassif *> SolideMassif::points() const
+QList<shared_ptr<PointMassif> > SolideMassif::points()
 {
-    QList<PointMassif *> r;
-    for (const auto & p : _points)
-    {
-        r << p.get();
-    }
-    return r;
+    return _points;
+    // QList<PointMassif *> r;
+    // for (const auto & p : _points)
+    // {
+    //     r << p.get();
+    // }
+    // return r;
 }
 
 void SolideMassif::clearForces()

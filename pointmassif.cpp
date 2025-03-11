@@ -103,9 +103,9 @@ QList<shared_ptr<PointMassif> > PointMassif::points()
     return r;
 }
 
-shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur)
+shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur, double amorti)
 {
-    auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur);
+    auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur, amorti);
     _liens << lien;
     point->addLien(lien);
     return lien;

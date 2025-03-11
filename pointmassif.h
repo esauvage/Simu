@@ -30,7 +30,7 @@ public:
     void setParent(PointMassif *newParent);
     virtual QList <std::shared_ptr<PointMassif> > points();
 
-    std::shared_ptr<LienRessort> addLien(std::shared_ptr<PointMassif> point, double raideur);
+    std::shared_ptr<LienRessort> addLien(std::shared_ptr<PointMassif> point, double raideur, double amorti = 0);
     void addLien(std::shared_ptr<LienRessort> lien);
     QList<std::shared_ptr<LienRessort> > liens();
 

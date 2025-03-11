@@ -8,8 +8,8 @@
 
 #include "soleil.h"
 #include "terre.h"
-#include "mercure.h"
-#include "venus.h"
+//#include "mercure.h"
+//#include "venus.h"
 #include "gravitevisiteur.h"
 #include "lienvisiteur.h"
 
@@ -70,6 +70,18 @@ void SimuWindow::tick(int temps)
     _gTerre->setLine(gTerre);
     ui->gvwTerre->ensureVisible(_gTerre);
     ui->gvwTerre->update();
+}
+
+void SimuWindow::createPopulation(int size)
+{
+    _population.clear();
+    for (; _population.size()< size;)
+    {
+        auto raideur = 10^(rand()%30 - 15);
+        auto amorti = 10^(rand()%30 - 15);
+        auto tension = rand()/(double)RAND_MAX;
+        _population << QList({raideur, amorti, tension});
+    }
 }
 
 

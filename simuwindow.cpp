@@ -13,6 +13,8 @@
 #include "gravitevisiteur.h"
 #include "lienvisiteur.h"
 
+#include "sphereponctuelle.h"
+
 using namespace std;
 
 SimuWindow::SimuWindow(QWidget *parent)
@@ -20,19 +22,66 @@ SimuWindow::SimuWindow(QWidget *parent)
     , ui(new Ui::SimuWindow)
 {
     ui->setupUi(this);
-    _corps << make_shared<Soleil>();
-    auto terre = make_shared<Terre>();
-    _corps << terre;
-    // _corps << make_shared<Mercure>();
-    // _corps << make_shared<Venus>();
+	auto s = make_shared<SolideMassif>();
+	s->setNom("Test 2 boules");
+	s->setMasse(2);
+	s->setPos(QVector3D(0, 0, 0));
+	s->setVit(QVector3D(0, 0, 0));
+	shared_ptr<SpherePonctuelle> a = make_shared<SpherePonctuelle>(1);
+	a->setPos(QVector3D(-1, 0, 0));
+	a->setVit(QVector3D(0, 0.1, 0));
+	a->setParent(s.get());
+	a->setMasse(s->masse()/2);
+	s->addPoint(a);
+	auto b = make_shared<SpherePonctuelle>(1);
+	b->setPos(QVector3D(1, 0, 0));
+	b->setVit(QVector3D(0, -0.1, 0));
+	b->setParent(s.get());
+	b->setMasse(1);
+	s->addPoint(b);
+	auto c = make_shared<SpherePonctuelle>(1);
+	c->setPos(QVector3D(0, 1, 0));
+	c->setVit(QVector3D(0.1, 0, 0));
+	c->setParent(s.get());
+	c->setMasse(1);
+	s->addPoint(c);
+	auto d = make_shared<SpherePonctuelle>(1);
+	d->setPos(QVector3D(0, -1, 0));
+	d->setVit(QVector3D(-0.1, 0, 0));
+	d->setParent(s.get());
+	d->setMasse(1);
+	s->addPoint(d);
+	s->addLien(a->addLien(b, 0.1, 0.1, a->pos().distanceToPoint(b->pos())));
+	s->addLien(b->addLien(c, 0.1, 0.1, b->pos().distanceToPoint(c->pos())));
+	s->addLien(c->addLien(d, 0.1, 0.1, c->pos().distanceToPoint(d->pos())));
+	s->addLien(d->addLien(a, 0.1, 0.1, d->pos().distanceToPoint(a->pos())));
+	s->addLien(d->addLien(b, 0.1, 0.1, d->pos().distanceToPoint(b->pos())));
+	s->addLien(c->addLien(a, 0.1, 0.1, c->pos().distanceToPoint(a->pos())));
+	_corps << s;
+
+	// _corps << make_shared<Soleil>();
+	// auto terre = make_shared<Terre>();
+	// _corps << terre;
+	// // _corps << make_shared<Mercure>();
+	// // _corps << make_shared<Venus>();
 
     QGraphicsScene *scene = new QGraphicsScene();
-    ui->gvwTerre->setScene(scene);
-    const QPointF t1(terre->points().at(0)->pos().x(), terre->points().at(0)->pos().y());
-    const QPointF t2(terre->points().at(1)->pos().x(), terre->points().at(1)->pos().y());
-    const QLineF gTerre(t1, t2);
-    _gTerre = ui->gvwTerre->scene()->addLine(gTerre);
-    ui->gvwTerre->ensureVisible(_gTerre);
+	// const QPointF t1(terre->points().at(0)->pos().x(), terre->points().at(0)->pos().y());
+	//    const QPointF t2(terre->points().at(1)->pos().x(), terre->points().at(1)->pos().y());
+	//    const QLineF gTerre(t1, t2);
+
+	for (int i = 0; i < s->points().size(); ++i) {
+		const QPointF t1(s->points().at(i)->pos().x()*100, s->points().at(i)->pos().y()*100);
+		const QPointF t2(s->points().at((i+1)%s->points().size())->pos().x()*100, s->points().at((i+1)%s->points().size())->pos().y()*100);
+		const QLineF gTerre(t1, t2);
+		_gTerre << scene->addLine(gTerre);
+	}
+	scene->setSceneRect(-10, -10, 20, 20);
+	scene->addLine(QLineF(QPointF(10, 10), QPointF(30, 30)));
+	ui->gvwTerre->setScene(scene);
+	ui->gvwTerre->update();
+//	ui->gvwTerre->ensureVisible(_gTerre, 10, 10);
+//	ui->gvwTerre->setSceneRect(QRect(-10, -10, 20, 20));
 }
 
 SimuWindow::~SimuWindow()
@@ -43,12 +92,12 @@ SimuWindow::~SimuWindow()
 void SimuWindow::on_btnGo_clicked()
 {
 //    for (int i = 0; i < 87.869 * 24 * 3.6; ++i)
-    for (int i = 0; i < 365.25 * 24 * 3600; i+=1000)
+//    for (int i = 0; i < 365.25 * 24 * 3600; i+=1000)
     {
-        qDebug() << QDateTime(QDate(2024, 1, 1), QTime(0, 0)).addSecs(i);
-        tick(1000);
+//        qDebug() << QDateTime(QDate(2024, 1, 1), QTime(0, 0)).addSecs(i);
+		tick(1);
         update();
-        QObject().thread()->usleep(100);
+//		QObject().thread()->usleep(10000);
     }
 }
 
@@ -59,16 +108,19 @@ void SimuWindow::tick(int temps)
         c->clearForces();
     }
     GraviteVisiteur::appliqueGravite(_corps);
-    LienVisiteur::appliqueLien(_corps);
+	LienVisiteur::appliqueLien(_corps, temps);
     for (auto &c : _corps)
     {
         c->tick(temps);
     }
-    const QPointF t1(_corps.last()->points().at(0)->pos().x(), _corps.last()->points().at(0)->pos().y());
-    const QPointF t2(_corps.last()->points().at(1)->pos().x(), _corps.last()->points().at(1)->pos().y());
-    const QLineF gTerre(t1, t2);
-    _gTerre->setLine(gTerre);
-    ui->gvwTerre->ensureVisible(_gTerre);
+	auto s = _corps.last();
+	for (int i = 0; i < s->points().size(); ++i) {
+		const QPointF t1(s->points().at(i)->pos().x()*100, s->points().at(i)->pos().y()*100);
+		const QPointF t2(s->points().at((i+1)%s->points().size())->pos().x()*100, s->points().at((i+1)%s->points().size())->pos().y()*100);
+		const QLineF gTerre(t1, t2);
+		_gTerre[i]->setLine(gTerre);
+	}
+//	 ui->gvwTerre->ensureVisible(_gTerre);
     ui->gvwTerre->update();
 }
 
@@ -77,10 +129,10 @@ void SimuWindow::createPopulation(int size)
     _population.clear();
     for (; _population.size()< size;)
     {
-        auto raideur = 10^(rand()%30 - 15);
-        auto amorti = 10^(rand()%30 - 15);
-        auto tension = rand()/(double)RAND_MAX;
-        _population << QList({raideur, amorti, tension});
+		double raideur = 10^(rand()%30 - 15);
+		double amorti = 10^(rand()%30 - 15);
+		double tension = rand()/(double)RAND_MAX;
+		_population << QList<Chromosome>({Chromosome({raideur, amorti, tension})});
     }
 }
 

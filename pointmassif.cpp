@@ -22,7 +22,7 @@ void PointMassif::tick(int temps)
     }
     _vit += a * temps;
     _pos += _vit * temps;
-    qDebug() << _nom << "Vitesse:" << _vit.length();//"Position : " << _pos << "Vitesse : " << _vit << "Accélération :" << a << a.length();
+	qDebug() << _nom << "Vitesse:" << _vit;//"Position : " << _pos << "Vitesse : " << _vit << "Accélération :" << a << a.length();
 }
 
 float PointMassif::masse() const
@@ -103,9 +103,9 @@ QList<shared_ptr<PointMassif> > PointMassif::points()
     return r;
 }
 
-shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur, double amorti)
+shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur, double amorti, double lRepos)
 {
-    auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur, amorti);
+	auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur, amorti, lRepos);
     _liens << lien;
     point->addLien(lien);
     return lien;

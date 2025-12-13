@@ -15,11 +15,10 @@ void SolideMassif::tick(int temps)
     {
         p->tick(temps);
         centre += p->pos() * p->masse();
-        vitCentre += p->vit() * p->masse();
         masseTotale += p->masse();
     }
     centre /= masseTotale;
-    vitCentre /= masseTotale;
+	vitCentre = (centre - pos())/temps;
     QVector3D a;
     QVector3D moment;
     double momentInertie;
@@ -35,8 +34,8 @@ void SolideMassif::tick(int temps)
         momentInertie = (p->pos() - centre).lengthSquared() * p->masse();
     }
     a /= masseTotale;
-    _momentCinetique += moment * temps;
-    _vitAngle += _momentCinetique/momentInertie;
+	_momentCinetique = moment * temps;
+	_vitAngle = _momentCinetique/momentInertie;
  //   setVit(vit() + a * temps);
     setVit(vitCentre);
     centre += vit() * temps;

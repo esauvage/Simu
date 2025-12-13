@@ -29,10 +29,11 @@ private slots:
 
 private:
     void tick(int temps);
+    void createPopulation(int size);
 
     Ui::SimuWindow *ui;
     QList<std::shared_ptr<PointMassif> > _corps;
     QList<Chromosome> _population;
-    QGraphicsLineItem * _gTerre;
+	QList<QGraphicsLineItem *> _gTerre;
 };
 #endif // SIMUWINDOW_H

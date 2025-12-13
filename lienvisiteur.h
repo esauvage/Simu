@@ -9,7 +9,7 @@ class LienVisiteur
 {
 public:
     LienVisiteur();
-    static void appliqueLien(QList<std::shared_ptr<PointMassif> > &points);
+	static void appliqueLien(QList<std::shared_ptr<PointMassif> > &points, int temps);
 };
 
 #endif // LIENVISITEUR_H

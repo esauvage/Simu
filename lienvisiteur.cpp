@@ -7,13 +7,13 @@ using namespace std;
 
 LienVisiteur::LienVisiteur() {}
 
-void LienVisiteur::appliqueLien(QList<shared_ptr <PointMassif> > &points)
+void LienVisiteur::appliqueLien(QList<shared_ptr <PointMassif> > &points, int temps)
 {
     for (auto & p : points)
     {
         for (auto & l : p->liens())
         {
-            l->tick(10);
+			l->tick(temps);
         }
     }
 }

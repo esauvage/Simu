@@ -21,8 +21,8 @@ void GraviteVisiteur::appliqueGravite(QList<shared_ptr <PointMassif> > &points)
             auto &c2 = pointsNus[j];
             if (c1->parent() && (c1->parent() == c2->parent())) continue;
             //Les choses s'attirent en fonction de leur masse et en raison inverse du carré de leur distance
-            double dist = 6.67430e-11 * c1->masse() * c2->masse()/(c1->pos() - c2->pos()).lengthSquared();
-            QVector3D f = dist * (c2->pos()-c1->pos()).normalized();
+			double dist = 6.67430e-11 * c1->masse() * c2->masse()/(c1->pos(c1->parent()) - c2->pos(c2->parent())).lengthSquared();
+			QVector3D f = dist * (c2->pos(c2->parent())-c1->pos(c1->parent())).normalized();
             c1->addForce(f);
             c2->addForce(-f);
         }

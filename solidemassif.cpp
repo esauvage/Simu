@@ -8,7 +8,8 @@ SolideMassif::SolideMassif() {}
 
 void SolideMassif::tick(int temps)
 {
-    QVector3D centre;
+	if (frames().isEmpty()) return;
+	QVector3D centre;
     QVector3D vitCentre;
     double masseTotale = 0;
     for (auto & p : _points)
@@ -18,14 +19,14 @@ void SolideMassif::tick(int temps)
         masseTotale += p->masse();
     }
     centre /= masseTotale;
-	vitCentre = (centre - pos())/temps;
+	vitCentre = centre/temps;
     QVector3D a;
     QVector3D moment;
     double momentInertie;
     for (auto & p : _points)
     {
         p->setPos(p->pos() - centre);
-        p->setVit(p->vit() - vitCentre);
+//        p->setVit(p->vit() - vitCentre);
         if (p->masse())
         {
             a += p->force();
@@ -36,12 +37,17 @@ void SolideMassif::tick(int temps)
     a /= masseTotale;
 	_momentCinetique = moment * temps;
 	_vitAngle = _momentCinetique/momentInertie;
- //   setVit(vit() + a * temps);
-    setVit(vitCentre);
-    centre += vit() * temps;
-    setPos(centre);
-    // setPos(pos() + vit() * temps);
-    qDebug() << nom() << "Position : " << pos() << "Vitesse : " << vit() << "Vitesse Angulaire : " << _vitAngle ;
+	vitCentre += vit();
+	centre += pos();
+	rFrames() << Frame();
+	setVit(vitCentre);
+//    centre += vit() * temps;
+	setPos(centre);
+	auto grandeur = rFrames().last().valeur("position");
+	grandeur.integre(temps, 0);
+	rFrames().last().addValeur("position", grandeur);
+	while (frames().size()>2) rFrames().removeFirst();
+	qDebug() << nom() << "Position : " << pos() << "Vitesse : " << vit() << "Vitesse Angulaire : " << _vitAngle ;
 }
 
 void SolideMassif::clearPoints()

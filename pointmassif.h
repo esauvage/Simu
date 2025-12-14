@@ -4,6 +4,8 @@
 #include <QVector3D>
 #include <QList>
 
+#include "frame.h"
+
 class LienRessort;
 
 class PointMassif : public std::enable_shared_from_this<PointMassif>
@@ -14,13 +16,13 @@ public:
     float masse() const;
     void setMasse(float newMasse);
 
-    QVector3D pos() const;
+	QVector3D pos(PointMassif *ref = nullptr) const;
     void setPos(const QVector3D &newPos);
 
     virtual void clearForces();
     void addForce(const QVector3D &f);
     QVector3D force() const;
-    QVector3D vit() const;
+	QVector3D vit(PointMassif *ref = nullptr) const;
     void setVit(const QVector3D &newVit);
 
     QString nom() const;
@@ -34,14 +36,16 @@ public:
     void addLien(std::shared_ptr<LienRessort> lien);
     QList<std::shared_ptr<LienRessort> > liens();
 
+	QList<Frame> frames() const;
+protected:
+	QList<Frame> &rFrames();
 private:
     QString _nom;
-    QVector3D _pos;
-    QVector3D _vit;
     QList<QVector3D> _forces;
     QList<std::shared_ptr<LienRessort> > _liens;
     float _masse;
     PointMassif * _parent;
+	QList <Frame> _frames;
 };
 
 #endif // POINTMASSIF_H

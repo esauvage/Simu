@@ -12,6 +12,7 @@
 //#include "venus.h"
 #include "gravitevisiteur.h"
 #include "lienvisiteur.h"
+#include "collisionsvisiteur.h"
 
 #include "sphereponctuelle.h"
 
@@ -22,42 +23,60 @@ SimuWindow::SimuWindow(QWidget *parent)
     , ui(new Ui::SimuWindow)
 {
     ui->setupUi(this);
+	const auto raideur = 0.2;
+	const auto amorti = 0;
 	auto s = make_shared<SolideMassif>();
-	s->setNom("Test 2 boules");
+	s->setNom("Test 4 boules");
 	s->setMasse(2);
 	s->setPos(QVector3D(0, 0, 0));
-	s->setVit(QVector3D(0, 0, 0));
+	s->setVit(QVector3D(0.02, 0, 0));
 	shared_ptr<SpherePonctuelle> a = make_shared<SpherePonctuelle>(1);
 	a->setPos(QVector3D(-1, 0, 0));
 	a->setVit(QVector3D(0, 0.1, 0));
 	a->setParent(s.get());
-	a->setMasse(s->masse()/2);
+	a->setMasse(s->masse()/4);
 	s->addPoint(a);
 	auto b = make_shared<SpherePonctuelle>(1);
 	b->setPos(QVector3D(1, 0, 0));
 	b->setVit(QVector3D(0, -0.1, 0));
 	b->setParent(s.get());
-	b->setMasse(1);
+	b->setMasse(s->masse()/4);
 	s->addPoint(b);
 	auto c = make_shared<SpherePonctuelle>(1);
 	c->setPos(QVector3D(0, 1, 0));
 	c->setVit(QVector3D(0.1, 0, 0));
 	c->setParent(s.get());
-	c->setMasse(1);
+	c->setMasse(s->masse()/4);
 	s->addPoint(c);
 	auto d = make_shared<SpherePonctuelle>(1);
 	d->setPos(QVector3D(0, -1, 0));
 	d->setVit(QVector3D(-0.1, 0, 0));
 	d->setParent(s.get());
-	d->setMasse(1);
+	d->setMasse(s->masse()/4);
 	s->addPoint(d);
-	s->addLien(a->addLien(b, 0.1, 0.1, a->pos().distanceToPoint(b->pos())));
-	s->addLien(b->addLien(c, 0.1, 0.1, b->pos().distanceToPoint(c->pos())));
-	s->addLien(c->addLien(d, 0.1, 0.1, c->pos().distanceToPoint(d->pos())));
-	s->addLien(d->addLien(a, 0.1, 0.1, d->pos().distanceToPoint(a->pos())));
-	s->addLien(d->addLien(b, 0.1, 0.1, d->pos().distanceToPoint(b->pos())));
-	s->addLien(c->addLien(a, 0.1, 0.1, c->pos().distanceToPoint(a->pos())));
+	s->addLien(a->addLien(b, raideur, amorti, a->pos().distanceToPoint(b->pos())));
+	s->addLien(b->addLien(c, raideur, amorti, b->pos().distanceToPoint(c->pos())));
+	s->addLien(c->addLien(d, raideur, amorti, c->pos().distanceToPoint(d->pos())));
+	s->addLien(d->addLien(a, raideur, amorti, d->pos().distanceToPoint(a->pos())));
+	s->addLien(d->addLien(b, raideur, amorti, d->pos().distanceToPoint(b->pos())));
+	s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
 	_corps << s;
+	// s = make_shared<SolideMassif>();
+	// s->setNom("Test 4 boules");
+	// s->setMasse(amorti);
+	// s->setPos(QVector3D(2, 0, 0));
+	// s->setVit(QVector3D(0, 0, 0));
+	// s->addPoint(a);
+	// s->addPoint(b);
+	// s->addPoint(c);
+	// s->addPoint(d);
+	// s->addLien(a->addLien(b, raideur, amorti, a->pos().distanceToPoint(b->pos())));
+	// s->addLien(b->addLien(c, raideur, amorti, b->pos().distanceToPoint(c->pos())));
+	// s->addLien(c->addLien(d, raideur, amorti, c->pos().distanceToPoint(d->pos())));
+	// s->addLien(d->addLien(a, raideur, amorti, d->pos().distanceToPoint(a->pos())));
+	// s->addLien(d->addLien(b, raideur, amorti, d->pos().distanceToPoint(b->pos())));
+	// s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
+	// _corps << s;
 
 	// _corps << make_shared<Soleil>();
 	// auto terre = make_shared<Terre>();
@@ -71,8 +90,8 @@ SimuWindow::SimuWindow(QWidget *parent)
 	//    const QLineF gTerre(t1, t2);
 
 	for (int i = 0; i < s->points().size(); ++i) {
-		const QPointF t1(s->points().at(i)->pos().x()*100, s->points().at(i)->pos().y()*100);
-		const QPointF t2(s->points().at((i+1)%s->points().size())->pos().x()*100, s->points().at((i+1)%s->points().size())->pos().y()*100);
+		const QPointF t1(s->points().at(i)->pos(s.get()).x()*100, s->points().at(i)->pos(s.get()).y()*100);
+		const QPointF t2(s->points().at((i+1)%s->points().size())->pos(s.get()).x()*100, s->points().at((i+1)%s->points().size())->pos(s.get()).y()*100);
 		const QLineF gTerre(t1, t2);
 		_gTerre << scene->addLine(gTerre);
 	}
@@ -106,17 +125,18 @@ void SimuWindow::tick(int temps)
     for (auto &c : _corps)
     {
         c->clearForces();
-    }
-    GraviteVisiteur::appliqueGravite(_corps);
+	}
+	GraviteVisiteur::appliqueGravite(_corps);
 	LienVisiteur::appliqueLien(_corps, temps);
     for (auto &c : _corps)
     {
         c->tick(temps);
     }
+	CollisionsVisiteur::detecte(_corps);
 	auto s = _corps.last();
 	for (int i = 0; i < s->points().size(); ++i) {
-		const QPointF t1(s->points().at(i)->pos().x()*100, s->points().at(i)->pos().y()*100);
-		const QPointF t2(s->points().at((i+1)%s->points().size())->pos().x()*100, s->points().at((i+1)%s->points().size())->pos().y()*100);
+		const QPointF t1(s->points().at(i)->pos(s.get()).x()*100, s->points().at(i)->pos(s.get()).y()*100);
+		const QPointF t2(s->points().at((i+1)%s->points().size())->pos(s.get()).x()*100, s->points().at((i+1)%s->points().size())->pos(s.get()).y()*100);
 		const QLineF gTerre(t1, t2);
 		_gTerre[i]->setLine(gTerre);
 	}

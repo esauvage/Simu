@@ -1,7 +1,7 @@
 #include "venus.h"
 
 Venus::Venus()
-    :PointMassif()
+    :PointMateriel()
 {
     setNom("Venus");
     setMasse(4.8675e24);

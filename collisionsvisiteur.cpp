@@ -4,7 +4,7 @@
 
 CollisionsVisiteur::CollisionsVisiteur() {}
 
-void CollisionsVisiteur::detecte(QList<std::shared_ptr<PointMassif> > &points)
+void CollisionsVisiteur::detecte(QList<std::shared_ptr<PointMateriel> > &points)
 {
 	for (auto & p1 : points) {
 		auto iPenultieme = p1->frames().size() - 2;

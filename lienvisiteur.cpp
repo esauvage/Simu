@@ -7,7 +7,7 @@ using namespace std;
 
 LienVisiteur::LienVisiteur() {}
 
-void LienVisiteur::appliqueLien(QList<shared_ptr <PointMassif> > &points, int temps)
+void LienVisiteur::appliqueLien(QList<shared_ptr <PointMateriel> > &points, int temps)
 {
     for (auto & p : points)
     {

@@ -6,13 +6,13 @@
 
 using namespace std;
 
-PointMassif::PointMassif()
+PointMateriel::PointMateriel()
 	:_masse(0), _parent(nullptr)
 {
 
 }
 
-void PointMassif::tick(int temps)
+void PointMateriel::tick(int temps)
 {
 	if (_frames.isEmpty()) return;
 	auto p = _frames.last().valeur("position");
@@ -28,24 +28,24 @@ void PointMassif::tick(int temps)
 			 << "Accélération :" << _frames.last().valeur("position").getValeur(2);
 }
 
-float PointMassif::masse() const
+float PointMateriel::masse() const
 {
     return _masse;
 }
 
-void PointMassif::setMasse(float newMasse)
+void PointMateriel::setMasse(float newMasse)
 {
     _masse = newMasse;
 }
 
-QVector3D PointMassif::pos(PointMassif *ref) const
+QVector3D PointMateriel::pos(PointMateriel *ref) const
 {
 	if (_frames.isEmpty()) return QVector3D();
 	QVector3D r = _frames.last().valeur("position").getValeur(0);
 	return ref ? r + ref->pos() : r;
 }
 
-void PointMassif::setPos(const QVector3D &newPos)
+void PointMateriel::setPos(const QVector3D &newPos)
 {
 	if (_frames.isEmpty()) _frames << Frame();
 	auto p = _frames.last().valeur("position");
@@ -53,17 +53,17 @@ void PointMassif::setPos(const QVector3D &newPos)
 	_frames.last().addValeur("position", p);
 }
 
-void PointMassif::clearForces()
+void PointMateriel::clearForces()
 {
     _forces.clear();
 }
 
-void PointMassif::addForce(const QVector3D &f)
+void PointMateriel::addForce(const QVector3D &f)
 {
     _forces << f;
 }
 
-QVector3D PointMassif::force() const
+QVector3D PointMateriel::force() const
 {
     QVector3D r;
     for (const auto & f : _forces)
@@ -74,14 +74,14 @@ QVector3D PointMassif::force() const
     return r;
 }
 
-QVector3D PointMassif::vit(PointMassif * ref) const
+QVector3D PointMateriel::vit(PointMateriel * ref) const
 {
 	if (_frames.isEmpty()) return QVector3D();
 	auto r = _frames.last().valeur("position").getValeur(1);
 	return ref ? r + ref->vit() : r;
 }
 
-void PointMassif::setVit(const QVector3D &newVit)
+void PointMateriel::setVit(const QVector3D &newVit)
 {
 	if (_frames.isEmpty()) _frames << Frame();
 	auto p = _frames.last().valeur("position");
@@ -89,34 +89,34 @@ void PointMassif::setVit(const QVector3D &newVit)
 	_frames.last().addValeur("position", p);
 }
 
-QString PointMassif::nom() const
+QString PointMateriel::nom() const
 {
     return _nom;
 }
 
-void PointMassif::setNom(const QString &newNom)
+void PointMateriel::setNom(const QString &newNom)
 {
     _nom = newNom;
 }
 
-PointMassif *PointMassif::parent() const
+PointMateriel *PointMateriel::parent() const
 {
     return _parent;
 }
 
-void PointMassif::setParent(PointMassif *newParent)
+void PointMateriel::setParent(PointMateriel *newParent)
 {
     _parent = newParent;
 }
 
-QList<shared_ptr<PointMassif> > PointMassif::points()
+QList<shared_ptr<PointMateriel> > PointMateriel::points()
 {
-    QList<shared_ptr<PointMassif> >r;
+	QList<shared_ptr<PointMateriel> >r;
     r << shared_from_this();
     return r;
 }
 
-shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, double raideur, double amorti, double lRepos)
+shared_ptr<LienRessort> PointMateriel::addLien(shared_ptr<PointMateriel> point, double raideur, double amorti, double lRepos)
 {
 	auto lien = make_shared<LienRessort>(shared_from_this(), point, raideur, amorti, lRepos);
     _liens << lien;
@@ -124,22 +124,22 @@ shared_ptr<LienRessort> PointMassif::addLien(shared_ptr<PointMassif> point, doub
     return lien;
 }
 
-void PointMassif::addLien(std::shared_ptr<LienRessort> lien)
+void PointMateriel::addLien(std::shared_ptr<LienRessort> lien)
 {
     _liens << lien;
 }
 
-QList<std::shared_ptr<LienRessort> > PointMassif::liens()
+QList<std::shared_ptr<LienRessort> > PointMateriel::liens()
 {
     return _liens;
 }
 
-QList<Frame> PointMassif::frames() const
+QList<Frame> PointMateriel::frames() const
 {
 	return _frames;
 }
 
-QList<Frame> &PointMassif::rFrames()
+QList<Frame> &PointMateriel::rFrames()
 {
 	return _frames;
 }

@@ -55,12 +55,12 @@ void SolideMassif::clearPoints()
     _points.clear();
 }
 
-void SolideMassif::addPoint(const std::shared_ptr<PointMassif> &f)
+void SolideMassif::addPoint(const std::shared_ptr<PointMateriel> &f)
 {
     _points << f;
 }
 
-QList<shared_ptr<PointMassif> > SolideMassif::points()
+QList<shared_ptr<PointMateriel> > SolideMassif::points()
 {
     return _points;
     // QList<PointMassif *> r;

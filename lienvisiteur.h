@@ -3,13 +3,13 @@
 
 #include <QList>
 
-class PointMassif;
+class PointMateriel;
 
 class LienVisiteur
 {
 public:
     LienVisiteur();
-	static void appliqueLien(QList<std::shared_ptr<PointMassif> > &points, int temps);
+	static void appliqueLien(QList<std::shared_ptr<PointMateriel> > &points, int temps);
 };
 
 #endif // LIENVISITEUR_H

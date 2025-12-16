@@ -1,7 +1,7 @@
 #include "soleil.h"
 
 Soleil::Soleil()
-    :PointMassif()
+    :PointMateriel()
 {
     setNom("Soleil");
     setMasse(1.9884e30);

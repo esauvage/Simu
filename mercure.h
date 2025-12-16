@@ -3,7 +3,7 @@
 
 #include "pointmassif.h"
 
-class Mercure : public PointMassif
+class Mercure : public PointMateriel
 {
 public:
     Mercure();

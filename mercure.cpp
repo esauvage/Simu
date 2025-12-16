@@ -1,7 +1,7 @@
 #include "mercure.h"
 
 Mercure::Mercure()
-    :PointMassif()
+    :PointMateriel()
 {
     setNom("Mercure");
     setMasse(3.3011e23);

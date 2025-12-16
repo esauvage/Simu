@@ -3,7 +3,7 @@
 
 #include "pointmassif.h"
 
-class SpherePonctuelle : public PointMassif
+class SpherePonctuelle : public PointMateriel
 {
 public:
     SpherePonctuelle(double rayon = 0);

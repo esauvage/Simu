@@ -4,10 +4,10 @@
 
 using namespace std;
 
-LienRessort::LienRessort(shared_ptr<PointMassif> A, shared_ptr<PointMassif> B, double raideur, double amorti, double lRepos)
+LienRessort::LienRessort(shared_ptr<PointMateriel> A, shared_ptr<PointMateriel> B, double raideur, double amorti, double lRepos)
 	:_A(A), _B(B), _raideur(raideur), _amorti(amorti), _longueurRepos(lRepos)
 {
-	if (!_longueurRepos) _longueurRepos = _A->pos().distanceToPoint(_B->pos()) * 0.875;
+	if (!_longueurRepos) _longueurRepos = _A->pos().distanceToPoint(_B->pos());
 }
 
 void LienRessort::tick(int temps)

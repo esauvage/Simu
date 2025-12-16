@@ -32,7 +32,7 @@ private:
     void createPopulation(int size);
 
     Ui::SimuWindow *ui;
-    QList<std::shared_ptr<PointMassif> > _corps;
+    QList<std::shared_ptr<PointMateriel> > _corps;
     QList<Chromosome> _population;
 	QList<QGraphicsLineItem *> _gTerre;
 };

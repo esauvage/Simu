@@ -5,18 +5,18 @@
 
 class LienRessort;
 
-class SolideMassif : public PointMassif
+class SolideMassif : public PointMateriel
 {
 public:
     SolideMassif();
     void tick(int temps) override;
     void clearPoints();
-    void addPoint(const std::shared_ptr <PointMassif> &f);
-    QList <std::shared_ptr<PointMassif> > points() override;
+    void addPoint(const std::shared_ptr <PointMateriel> &f);
+    QList <std::shared_ptr<PointMateriel> > points() override;
     void clearForces() override;
 
 private:
-    QList<std::shared_ptr<PointMassif> > _points;
+    QList<std::shared_ptr<PointMateriel> > _points;
     QVector3D _momentCinetique;
     QVector3D _vitAngle;
 };

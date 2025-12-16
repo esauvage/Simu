@@ -1,7 +1,7 @@
 #ifndef VENUS_H
 #define VENUS_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class Venus : public PointMateriel
 {

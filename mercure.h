@@ -1,7 +1,7 @@
 #ifndef MERCURE_H
 #define MERCURE_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class Mercure : public PointMateriel
 {

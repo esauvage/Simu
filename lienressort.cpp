@@ -1,6 +1,6 @@
 #include "lienressort.h"
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 using namespace std;
 
@@ -17,9 +17,9 @@ void LienRessort::tick(int temps)
 	auto longueur = v.length();
 	v.normalize();
 	auto f = (longueur - _longueurRepos) * _raideur;
-	_A->addForce(v*f);
-	_B->addForce(-v*f);
+    _A->addForce(Force(_B, v*f));
+    _B->addForce(Force(_A, -v*f));
 	f = QVector3D::dotProduct(v, _B->vit() - _A->vit()) * _amorti;
-	_A->addForce(-v * f);
-	_B->addForce(v * f);
+    _A->addForce(Force(_B, -v * f));
+    _B->addForce(Force(_B, v * f));
 }

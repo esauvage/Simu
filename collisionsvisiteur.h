@@ -1,7 +1,7 @@
 #ifndef COLLISIONSVISITEUR_H
 #define COLLISIONSVISITEUR_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class CollisionsVisiteur
 {

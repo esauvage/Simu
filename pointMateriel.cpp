@@ -1,4 +1,4 @@
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 #include "lienressort.h"
 
@@ -58,7 +58,7 @@ void PointMateriel::clearForces()
     _forces.clear();
 }
 
-void PointMateriel::addForce(const QVector3D &f)
+void PointMateriel::addForce(const Force &f)
 {
     _forces << f;
 }
@@ -68,7 +68,7 @@ QVector3D PointMateriel::force() const
     QVector3D r;
     for (const auto & f : _forces)
     {
-        r += f;
+        r += f.intensite();
     }
 
     return r;

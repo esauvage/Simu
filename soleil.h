@@ -1,7 +1,7 @@
 #ifndef SOLEIL_H
 #define SOLEIL_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class Soleil : public PointMateriel
 {

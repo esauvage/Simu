@@ -1,7 +1,7 @@
 #ifndef GRAVITEVISITEUR_H
 #define GRAVITEVISITEUR_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class GraviteVisiteur
 {

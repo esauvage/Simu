@@ -1,7 +1,7 @@
 #ifndef SOLIDEMASSIF_H
 #define SOLIDEMASSIF_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class LienRessort;
 

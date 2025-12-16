@@ -1,7 +1,7 @@
 #include "lienvisiteur.h"
 
 #include "lienressort.h"
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 using namespace std;
 

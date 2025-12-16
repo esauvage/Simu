@@ -1,7 +1,7 @@
 #ifndef SPHEREPONCTUELLE_H
 #define SPHEREPONCTUELLE_H
 
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 class SpherePonctuelle : public PointMateriel
 {

@@ -9,12 +9,15 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    collisionsvisiteur.cpp \
+    force.cpp \
+    frame.cpp \
     gravitevisiteur.cpp \
     lienressort.cpp \
     lienvisiteur.cpp \
     main.cpp \
     mercure.cpp \
-    pointmassif.cpp \
+    pointMateriel.cpp \
     simuwindow.cpp \
     soleil.cpp \
     solidemassif.cpp \
@@ -23,11 +26,14 @@ SOURCES += \
     venus.cpp
 
 HEADERS += \
+    collisionsvisiteur.h \
+    force.h \
+    frame.h \
     gravitevisiteur.h \
     lienressort.h \
     lienvisiteur.h \
     mercure.h \
-    pointmassif.h \
+    pointMateriel.h \
     simuwindow.h \
     soleil.h \
     solidemassif.h \

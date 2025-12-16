@@ -1,10 +1,11 @@
-#ifndef POINTMASSIF_H
-#define POINTMASSIF_H
+#ifndef POINTMATERIEL_H
+#define POINTMATERIEL_H
 
 #include <QVector3D>
 #include <QList>
 
 #include "frame.h"
+#include "force.h"
 
 class LienRessort;
 
@@ -20,7 +21,7 @@ public:
     void setPos(const QVector3D &newPos);
 
     virtual void clearForces();
-    void addForce(const QVector3D &f);
+    void addForce(const Force &f);
     QVector3D force() const;
 	QVector3D vit(PointMateriel *ref = nullptr) const;
     void setVit(const QVector3D &newVit);
@@ -41,11 +42,11 @@ protected:
 	QList<Frame> &rFrames();
 private:
     QString _nom;
-    QList<QVector3D> _forces;
+    QList<Force> _forces;
     QList<std::shared_ptr<LienRessort> > _liens;
     float _masse;
     PointMateriel * _parent;
 	QList <Frame> _frames;
 };
 
-#endif // POINTMASSIF_H
+#endif // POINTMATERIEL_H

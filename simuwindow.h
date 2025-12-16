@@ -4,7 +4,7 @@
 #include <QMainWindow>
 
 #include <QGraphicsLineItem>
-#include "pointmassif.h"
+#include "pointMateriel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

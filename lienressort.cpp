@@ -1,6 +1,7 @@
 #include "lienressort.h"
 
 #include "pointMateriel.h"
+#include "force.h"
 
 using namespace std;
 

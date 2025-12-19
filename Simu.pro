@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     collisionsvisiteur.cpp \
+    fabrique.cpp \
     force.cpp \
     frame.cpp \
     gravitevisiteur.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     collisionsvisiteur.h \
+    fabrique.h \
     force.h \
     frame.h \
     gravitevisiteur.h \

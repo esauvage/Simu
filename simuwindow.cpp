@@ -5,6 +5,7 @@
 #include <QThread>
 
 #include <QFileDialog>
+#include <QJsonDocument>
 
 #include "soleil.h"
 #include "terre.h"
@@ -170,6 +171,7 @@ void SimuWindow::on_actionOuvrir_triggered()
     QTextStream file_text(&file_obj);
     auto json_string = file_text.readAll();
     file_obj.close();
-    auto json_bytes = json_string.toLocal8Bit();
+	auto jsonDoc = QJsonDocument::fromJson(json_string.toLocal8Bit());
+	_corps = Fabrique::fromJson(jsonDoc);
 }
 

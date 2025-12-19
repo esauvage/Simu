@@ -8,7 +8,7 @@ class Fabrique
 {
 public:
 	Fabrique();
-	QList <std::shared_ptr<PointMateriel> > fromJson(QJsonDocument & jsonDoc);
+    static QList <std::shared_ptr<PointMateriel> > fromJson(QJsonDocument & jsonDoc);
 };
 
 #endif // FABRIQUE_H

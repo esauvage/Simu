@@ -14,6 +14,7 @@
 #include "gravitevisiteur.h"
 #include "lienvisiteur.h"
 #include "collisionsvisiteur.h"
+#include "fabrique.h"
 
 #include "sphereponctuelle.h"
 
@@ -30,7 +31,7 @@ SimuWindow::SimuWindow(QWidget *parent)
 	s->setNom("Test 4 boules");
 	s->setMasse(2);
 	s->setPos(QVector3D(0, 0, 0));
-	s->setVit(QVector3D(0.02, 0, 0));
+    s->setVit(QVector3D(2, 0, 0));
 	shared_ptr<SpherePonctuelle> a = make_shared<SpherePonctuelle>(1);
 	a->setPos(QVector3D(-1, 0, 0));
 	a->setVit(QVector3D(0, 0.1, 0));
@@ -62,28 +63,28 @@ SimuWindow::SimuWindow(QWidget *parent)
 	s->addLien(d->addLien(b, raideur, amorti, d->pos().distanceToPoint(b->pos())));
 	s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
 	_corps << s;
-	// s = make_shared<SolideMassif>();
-	// s->setNom("Test 4 boules");
-	// s->setMasse(amorti);
-	// s->setPos(QVector3D(2, 0, 0));
-	// s->setVit(QVector3D(0, 0, 0));
-	// s->addPoint(a);
-	// s->addPoint(b);
-	// s->addPoint(c);
-	// s->addPoint(d);
-	// s->addLien(a->addLien(b, raideur, amorti, a->pos().distanceToPoint(b->pos())));
-	// s->addLien(b->addLien(c, raideur, amorti, b->pos().distanceToPoint(c->pos())));
-	// s->addLien(c->addLien(d, raideur, amorti, c->pos().distanceToPoint(d->pos())));
-	// s->addLien(d->addLien(a, raideur, amorti, d->pos().distanceToPoint(a->pos())));
-	// s->addLien(d->addLien(b, raideur, amorti, d->pos().distanceToPoint(b->pos())));
-	// s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
-	// _corps << s;
+    s = make_shared<SolideMassif>();
+    s->setNom("Test 4 boules");
+    s->setMasse(amorti);
+    s->setPos(QVector3D(1, 1, 0));
+    s->setVit(QVector3D(0, -2, 0));
+    s->addPoint(a);
+    s->addPoint(b);
+    s->addPoint(c);
+    s->addPoint(d);
+    s->addLien(a->addLien(b, raideur, amorti, a->pos().distanceToPoint(b->pos())));
+    s->addLien(b->addLien(c, raideur, amorti, b->pos().distanceToPoint(c->pos())));
+    s->addLien(c->addLien(d, raideur, amorti, c->pos().distanceToPoint(d->pos())));
+    s->addLien(d->addLien(a, raideur, amorti, d->pos().distanceToPoint(a->pos())));
+    s->addLien(d->addLien(b, raideur, amorti, d->pos().distanceToPoint(b->pos())));
+    s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
+    _corps << s;
 
-	// _corps << make_shared<Soleil>();
-	// auto terre = make_shared<Terre>();
-	// _corps << terre;
-	// // _corps << make_shared<Mercure>();
-	// // _corps << make_shared<Venus>();
+    _corps << make_shared<Soleil>();
+    auto terre = make_shared<Terre>();
+    _corps << terre;
+    // _corps << make_shared<Mercure>();
+    // _corps << make_shared<Venus>();
 
     QGraphicsScene *scene = new QGraphicsScene();
 	// const QPointF t1(terre->points().at(0)->pos().x(), terre->points().at(0)->pos().y());

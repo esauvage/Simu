@@ -30,7 +30,7 @@ SimuWindow::SimuWindow(QWidget *parent)
 	auto s = make_shared<SolideMassif>();
 	s->setNom("Test 4 boules");
 	s->setMasse(2);
-	s->setPos(QVector3D(0, 0, 0));
+	s->setPos(QVector3D(-1, 0, 0));
     s->setVit(QVector3D(2, 0, 0));
 	shared_ptr<SpherePonctuelle> a = make_shared<SpherePonctuelle>(1);
 	a->setPos(QVector3D(-1, 0, 0));
@@ -66,8 +66,8 @@ SimuWindow::SimuWindow(QWidget *parent)
     s = make_shared<SolideMassif>();
     s->setNom("Test 4 boules");
     s->setMasse(amorti);
-    s->setPos(QVector3D(1, 1, 0));
-    s->setVit(QVector3D(0, -2, 0));
+	s->setPos(QVector3D(1, 0, 1));
+	s->setVit(QVector3D(-2, 0, -2));
     s->addPoint(a);
     s->addPoint(b);
     s->addPoint(c);
@@ -80,9 +80,9 @@ SimuWindow::SimuWindow(QWidget *parent)
     s->addLien(c->addLien(a, raideur, amorti, c->pos().distanceToPoint(a->pos())));
     _corps << s;
 
-    _corps << make_shared<Soleil>();
-    auto terre = make_shared<Terre>();
-    _corps << terre;
+	// _corps << make_shared<Soleil>();
+	// auto terre = make_shared<Terre>();
+	// _corps << terre;
     // _corps << make_shared<Mercure>();
     // _corps << make_shared<Venus>();
 
@@ -91,14 +91,16 @@ SimuWindow::SimuWindow(QWidget *parent)
 	//    const QPointF t2(terre->points().at(1)->pos().x(), terre->points().at(1)->pos().y());
 	//    const QLineF gTerre(t1, t2);
 
-	for (int i = 0; i < s->points().size(); ++i) {
-		const QPointF t1(s->points().at(i)->pos(s.get()).x()*100, s->points().at(i)->pos(s.get()).y()*100);
-		const QPointF t2(s->points().at((i+1)%s->points().size())->pos(s.get()).x()*100, s->points().at((i+1)%s->points().size())->pos(s.get()).y()*100);
-		const QLineF gTerre(t1, t2);
-		_gTerre << scene->addLine(gTerre);
+	for (const auto & c : _corps) {
+		QList <QGraphicsLineItem *> gCorps;
+		for (int i = 0; i < c->points().size(); ++i) {
+			const QPointF t1(c->points().at(i)->pos(c.get()).x()*100, c->points().at(i)->pos(c.get()).y()*100);
+			const QPointF t2(c->points().at((i+1)%c->points().size())->pos(c.get()).x()*100, c->points().at((i+1)%c->points().size())->pos(c.get()).y()*100);
+			const QLineF gTerre(t1, t2);
+			gCorps << scene->addLine(gTerre);
+		}
+		_gLCorps << gCorps;
 	}
-	scene->setSceneRect(-10, -10, 20, 20);
-	scene->addLine(QLineF(QPointF(10, 10), QPointF(30, 30)));
 	ui->gvwTerre->setScene(scene);
 	ui->gvwTerre->update();
 //	ui->gvwTerre->ensureVisible(_gTerre, 10, 10);
@@ -135,12 +137,15 @@ void SimuWindow::tick(int temps)
         c->tick(temps);
     }
 	CollisionsVisiteur::detecte(_corps);
-	auto s = _corps.last();
-	for (int i = 0; i < s->points().size(); ++i) {
-		const QPointF t1(s->points().at(i)->pos(s.get()).x()*100, s->points().at(i)->pos(s.get()).y()*100);
-		const QPointF t2(s->points().at((i+1)%s->points().size())->pos(s.get()).x()*100, s->points().at((i+1)%s->points().size())->pos(s.get()).y()*100);
-		const QLineF gTerre(t1, t2);
-		_gTerre[i]->setLine(gTerre);
+	for (int j = 0; j < _corps.size(); ++j) {
+		auto s = _corps[j];
+		auto gCorps = _gLCorps[j];
+		for (int i = 0; i < s->points().size(); ++i) {
+			const QPointF t1(s->points().at(i)->pos(s.get()).x()*100, s->points().at(i)->pos(s.get()).y()*100);
+			const QPointF t2(s->points().at((i+1)%s->points().size())->pos(s.get()).x()*100, s->points().at((i+1)%s->points().size())->pos(s.get()).y()*100);
+			const QLineF gTerre(t1, t2);
+			gCorps[i]->setLine(gTerre);
+		}
 	}
 //	 ui->gvwTerre->ensureVisible(_gTerre);
     ui->gvwTerre->update();

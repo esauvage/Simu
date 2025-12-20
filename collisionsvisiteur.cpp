@@ -42,18 +42,48 @@ void CollisionsVisiteur::detecte(QList<std::shared_ptr<PointMateriel> > &points)
             qDebug() << "Ca touche !";
             auto v3 = p1A - p2A;
             auto v1 = p1B - p1A;
-            auto v2 = p2B - p2A;
-            if (!v1.x()) qSwap(v1, v2);
-            if (!v1.x()) qSwap(v1, v3);
-            v1 /= v1.x();
-            v2 /= v2.x() ? v2.x() : 1;
-            v3 /= v3.x() ? v3.x() : 1;
-            v2 -= v1;
-            v3 -= v1;
-            v2 /= v2.y() ? v2.y() : 1;
-            v3 /= v3.y() ? v3.y() : 1;
-            v3 -= v2;
-            // auto alpha = (v3.x() + alpha * v1.x()) / v2.x();
+			auto v2 = p2A - p2B;
+			if (!v1.x()) {
+				qSwap(v1, v2);
+			}
+			if (!v1.x()) continue;
+			v2.setX(v2.x() / v1.x());
+			v3.setX(v3.x() / v1.x());
+			v1.setX(1);
+			if (v1.y()) {
+				v2.setY(v2.y() / v1.y());
+				v3.setY(v3.y() / v1.y());
+				v1.setY(0);
+				v2.setY(v2.y() - v2.x());
+				v3.setY(v3.y() - v3.x());
+				v2.setZ(v2.z() / v1.z());
+				v3.setZ(v3.z() / v1.z());
+				v1.setZ(0);
+				v2.setZ(v2.z() - v2.x());
+				v3.setZ(v3.z() - v3.x());
+			}
+			if (!v2.y()) {
+				v2.setY(v2.z());
+				v2.setZ(0);
+				auto buf = v3.y();
+				v3.setY(v3.z());
+				v3.setZ(buf);
+			}
+			if (!v2.y()) continue;
+			v3.setY(v3.y() / v2.y());
+			v2.setY(1);
+			if (v2.z()) {
+				v3.setZ(v3.z() / v2.z());
+				v2.setZ(0);
+				v3.setZ(v3.z() - v3.y());
+			}
+			auto alpha = v3.y();
+			auto beta = v3.x()- alpha*v2.x();
+			if (alpha != beta) {
+				qDebug() << "Finalement non !";
+				continue;
+			}
+			// auto alpha = (v3.x() + alpha * v1.x()) / v2.x();
             // auto beta = (v3.x() + alpha * v1.x()) / v2.x();// = CA.x/CD.y + &alpha;AB.x/ CD.x
 		}
 	}

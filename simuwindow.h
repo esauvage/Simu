@@ -34,6 +34,6 @@ private:
     Ui::SimuWindow *ui;
     QList<std::shared_ptr<PointMateriel> > _corps;
     QList<Chromosome> _population;
-	QList<QGraphicsLineItem *> _gTerre;
+	QList<QList<QGraphicsLineItem *> >_gLCorps;
 };
 #endif // SIMUWINDOW_H
